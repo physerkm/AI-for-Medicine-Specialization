@@ -84,11 +84,16 @@ This creates a problem for the learning algorithm would seize mostly normal exam
 
 How can we trace this problem to the loss function that we use to train the algorithm? How can we modify this loss function in the presence of imbalanced data. This loss over here is called the binary cross-entropy loss and this measures the performance of a classification model whose output is between 0 and 1.
 
-Let's look at an example to see how this loss function evaluates. We have an example of a chest x-ray that contains a mass, so it gets labeled with one and the algorithm outputs a probability of 0.2. The 0.2 is the probability according to the algorithm of `P(Y=1|X)`, the probability that this example is a mass. We can apply the loss function to compute the loss on this example. Our label is 1, so we're going to use the first term $${-logP(Y=1|X) if y=1}$$. Our loss is -log and then we're going to take the algorithm output, 0.2. This evaluates to 0.70.
-L = -log(0.2) = 0.70  This is the loss that the algorithm gets on this particular example.
-Let's look at another example. This time a non-mask example, which would have a label of 0. Our algorithm outputs a probability of 0.7. We're going to use {-logP(Y=0|X) if y=0}of the loss rate because y=0. The loss is going to be -log of the term P(Y=0|X). We can get P(Y=0|X) using P(Y=1|X). The way we can compute this quantity from that one is by recognizing that P(Y=0|X) that an example is 0 is 1-P(Y=1). An example as either mass or not. The algorithm says 70% probability that something is mass, then there's 30% probability it's not. We're going to plug in 1 - 0.7 = 0.3 and this expression evaluates to 0.52.
-L= -log(1-0.7) = -log(0.3) = 0.52
+Let's look at an example to see how this loss function evaluates. We have an example of a chest x-ray that contains a mass, so it gets labeled with one and the algorithm outputs a probability of 0.2. The 0.2 is the probability according to the algorithm of `P(Y=1|X)`, the probability that this example is a mass. We can apply the loss function to compute the loss on this example. Our label is 1, so we're going to use the first term `{-logP(Y=1|X) if y=1}`. Our loss is -log(0.2). This evaluates to 0.70. This is the loss that the algorithm gets on this particular example.
+
+Let's look at another example. This time a non-mask example, which would have a label of 0. Our algorithm outputs a probability of 0.7. We're going to use `{-logP(Y=0|X) if y=0}` of the loss rate because y=0. The loss is going to be -log of the term P(Y=0|X). We can get P(Y=0|X) using P(Y=1|X). The way we can compute this quantity from that one is by recognizing that P(Y=0|X) that an example is 0 is 1-P(Y=1). An example as either mass or not. The algorithm says 70% probability that something is mass, then there's 30% probability it's not. We're going to plug in `1 - 0.7 = 0.3` and this expression evaluates to 0.52.
+
+$$L= -log(1-0.7) = -log(0.3) = 0.52$$
+
+
 Impact of Class Imbalance on Loss Calculation
+
+
 We've seen how the loss is applied to a single example. Let's see how it applies to a bunch of examples.
 We have 6 examples that are normal, and 2 examples that are mass.
 P1, P2, P3, P5, P6, P8 are “Normal”.
