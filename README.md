@@ -60,21 +60,31 @@ The algorithm eventually learns to go from a chest X-ray input to produce the ou
 
 The algorithm produces an output in the form of scores, which are probabilities that the image contains a mass. The probability that this image contains a mass is outputted to be 0.48, and the probability for this image is outputted to be 0.51. When training has not started, these scores, these probability outputs are not going to match the desired label. Let's say the desired label for mass is 1, and for normal is 0. 0.48 is far off from 1 and 0.51 is far off from the desired label of 0. We can measure this error by computing a loss function. A loss function measures the error between our output probability and the desired label. We'll look at how this loss is computed soon enough. Then, a new set of images and desired labels is presented to the algorithm as it learns to produce scores that are closer to the desired labels over time. Notice how this output probability is getting closer to 1, and this output probability is getting closer to 0.
 
+### **1.3.3 Image Classification and Class Imbalance**
 
-Image Classification and Class Imbalance
 Typically, in medical AI examples, hundreds of thousands of images are shown to the algorithm.
+
 This is a typical setup for image classification, which is a core task in the computer vision field where a natural image is input to an image classification algorithm, which says what is the object contained in the image. You may have seen deep learning algorithms that can do this. Our example of chest X-ray classification is similar in many ways to the image classification setup. There are a few additional challenges which make training medical image classification algorithms more challenging, which we'll cover next.
+
 We'll talk about three key challenges for training algorithms on medical images:
+
 -	the class imbalance challenge,
 -	the multitask challenge,
 -	the dataset size challenge.
+
 For each challenge, we'll cover one or two techniques to tackle them.
-Let's start with the class imbalance challenge. There's not an equal number of examples of non-disease and disease in medical datasets. This is a reflection of the prevalence or the frequency of disease in the real-world, where we see that there are a lot more examples of normals than of mass, especially if we're looking at X-rays of a healthy population. In a medical dataset, you might see 100 times as many normal examples as mass examples.
-Binary Cross Entropy Loss Function
+
+Let's start with the class imbalance challenge. There's not an equal number of examples of non-disease and disease in medical datasets. This is a reflection of the prevalence or the frequency of disease in the real-world, where we see that there are a lot more examples of normals than of mass, especially if we're looking at X-rays of a healthy population. In a medical dataset, we might see 100 times as many normal examples as mass examples.
+
+### 1.3.4 Binary Cross Entropy Loss Function**
+
 This creates a problem for the learning algorithm would seize mostly normal examples. This yields a model that starts to predict a very low probability of disease for everybody and won't be able to identify when an example has a disease.
-Note: log with base 10 (lg) is being used to calculate the loss. One other popular choice is to use ln.
+
+**Note:** log with base 10 (lg) is being used to calculate the loss. One other popular choice is to use ln.
+
 How can we trace this problem to the loss function that we use to train the algorithm? How can we modify this loss function in the presence of imbalanced data. This loss over here is called the binary cross-entropy loss and this measures the performance of a classification model whose output is between 0 and 1.
-Let's look at an example to see how this loss function evaluates. We have an example of a chest x-ray that contains a mass, so it gets labeled with one and the algorithm outputs a probability of 0.2. The 0.2 is the probability according to the algorithm of P(Y=1|X), the probability that this example is a mass. We can apply the loss function to compute the loss on this example. Our label is 1, so we're going to use the first term {-logP(Y=1|X) if y=1}. Our loss is -log and then we're going to take the algorithm output, 0.2. This evaluates to 0.70.
+
+Let's look at an example to see how this loss function evaluates. We have an example of a chest x-ray that contains a mass, so it gets labeled with one and the algorithm outputs a probability of 0.2. The 0.2 is the probability according to the algorithm of `P(Y=1|X)`, the probability that this example is a mass. We can apply the loss function to compute the loss on this example. Our label is 1, so we're going to use the first term $${-logP(Y=1|X) if y=1}$$. Our loss is -log and then we're going to take the algorithm output, 0.2. This evaluates to 0.70.
 L = -log(0.2) = 0.70  This is the loss that the algorithm gets on this particular example.
 Let's look at another example. This time a non-mask example, which would have a label of 0. Our algorithm outputs a probability of 0.7. We're going to use {-logP(Y=0|X) if y=0}of the loss rate because y=0. The loss is going to be -log of the term P(Y=0|X). We can get P(Y=0|X) using P(Y=1|X). The way we can compute this quantity from that one is by recognizing that P(Y=0|X) that an example is 0 is 1-P(Y=1). An example as either mass or not. The algorithm says 70% probability that something is mass, then there's 30% probability it's not. We're going to plug in 1 - 0.7 = 0.3 and this expression evaluates to 0.52.
 L= -log(1-0.7) = -log(0.3) = 0.52
