@@ -2,7 +2,7 @@
 
 ## **1.1 Welcome to the AI for Medicine Specialization**
 
-### **Welcome to the Specialization**
+### **1.1.1 Welcome to the Specialization**
 
 Given an image of a chest X-ray, so unstructured image data, can we train a neural network to diagnose whether or not a patient has pneumonia? Or given structure data such as the patient's lab results, can we train a decision tree to estimate the risk of heart attack? By working on these concrete problems, we also see a lot of the practical aspects of machine learning from how they deal with imbalanced data sets, to how to work with missing data, to picking the right evaluation metric. In machine learning, we often default to classification accuracy as the metric. But for many applications, that's not the right metric.
 
