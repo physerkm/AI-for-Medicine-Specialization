@@ -76,7 +76,7 @@ For each challenge, we'll cover one or two techniques to tackle them.
 
 Let's start with the class imbalance challenge. There's not an equal number of examples of non-disease and disease in medical datasets. This is a reflection of the prevalence or the frequency of disease in the real-world, where we see that there are a lot more examples of normals than of mass, especially if we're looking at X-rays of a healthy population. In a medical dataset, we might see 100 times as many normal examples as mass examples.
 
-### 1.3.4 Binary Cross Entropy Loss Function**
+### **1.3.4 Binary Cross Entropy Loss Function**
 
 This creates a problem for the learning algorithm would seize mostly normal examples. This yields a model that starts to predict a very low probability of disease for everybody and won't be able to identify when an example has a disease.
 
@@ -91,20 +91,24 @@ Let's look at another example. This time a non-mask example, which would have a 
 $$L= -log(1-0.7) = -log(0.3) = 0.52$$
 
 
-Impact of Class Imbalance on Loss Calculation
+### **1.3.5 Impact of Class Imbalance on Loss Calculation**
 
-
-We've seen how the loss is applied to a single example. Let's see how it applies to a bunch of examples.
-We have 6 examples that are normal, and 2 examples that are mass.
-P1, P2, P3, P5, P6, P8 are “Normal”.
-P4 and P7 are “Mass”.
+We've seen how the loss is applied to a single example. Let's see how it applies to a bunch of examples. We have 6 examples that are normal, and 2 examples that are mass. P1, P2, P3, P5, P6, P8 are “Normal”. P4 and P7 are “Mass”.
 P2, P3, P4 are the patient IDs. When the training hasn't started, let's say the algorithm produces an output probability of 0.5 for all of the examples, the loss can then be computed for each of the examples.
+
 For a normal example, we're going to use -log(1-0.5)=0.3.
+
 For a mass example, we're going to use -log(0.5)=0.3.
-The total contribution to the loss from the mass examples comes out to 0.3x2=0.6.
-The total loss from the normal example, comes out to 0.3x6=1.8.
+
+Total Loss From Mass Examples is 0.3x2=0.6.
+Total Loss From Normal Example is 0.3x6=1.8.
+
 Notice how most of the contribution to the loss comes from the normal examples, rather than from the mass examples. The algorithm is optimizing its updates to get the normal examples, and not giving much relative weight to the mass examples. In practice, this doesn't produce a very good classifier. This is the class imbalance problem. The solution to the class imbalance problem is to modify the loss function, to weight the normal and the mass classes differently.
-wp will be the weight we assign to the positive or to the mass examples, and wn to the negative or normal examples.
+
+wp will be the weight we assign to the positive or to the mass examples.
+wn to the negative or normal examples.
+
 Let's see what happens when we weight the positive examples more. We want to weight the mass examples more, such that they can have an equal contribution overall to the loss, as the normal examples.
+
 Let's pick 6/8 as the weight we have on the mass examples, and 2/8 as the weight we have on the normal examples. If you sum up the total loss from the mass example, we get 0.45, and this is equal to the total loss from the normal examples. In the general case, the weight we'll put on the positive class will be the number of negative examples over the total number of examples. In our case, this is 6 normal examples over 8 total examples. The weight we'll put on the negative class will be the number of positive examples over the total number of examples, which is 2/8. With this setting of wp and wn, we can have over all of the examples for the loss contributions from the positive and the negative class to be the same. This is the idea of modifying the loss using weights, in this method that's called the weighted loss, to tackle the class imbalance problem.
 
